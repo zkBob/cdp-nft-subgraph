@@ -1,0 +1,71 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Vault
+    network: goerli
+    source:
+      address: "0x8c161566D7f920391Bc9c5342ec562488f637b12"
+      abi: Vault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CollateralDeposited
+        - CollateralWithdrew
+        - DebtBurned
+        - DebtMinted
+        - OracleUpdated
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - StabilisationFeeUpdated
+        - SystemPaused
+        - SystemPrivate
+        - SystemPublic
+        - SystemUnpaused
+        - TokenSet
+        - VaultClosed
+        - VaultLiquidated
+        - VaultOpened
+      abis:
+        - name: Vault
+          file: ./abis/Vault.json
+      eventHandlers:
+        - event: CollateralDeposited(indexed address,uint256,uint256)
+          handler: handleCollateralDeposited
+        - event: CollateralWithdrew(indexed address,uint256,uint256)
+          handler: handleCollateralWithdrew
+        - event: DebtBurned(indexed address,uint256,uint256)
+          handler: handleDebtBurned
+        - event: DebtMinted(indexed address,uint256,uint256)
+          handler: handleDebtMinted
+        - event: OracleUpdated(indexed address,indexed address,address)
+          handler: handleOracleUpdated
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: StabilisationFeeUpdated(indexed address,indexed address,uint256)
+          handler: handleStabilisationFeeUpdated
+        - event: SystemPaused(indexed address,indexed address)
+          handler: handleSystemPaused
+        - event: SystemPrivate(indexed address,indexed address)
+          handler: handleSystemPrivate
+        - event: SystemPublic(indexed address,indexed address)
+          handler: handleSystemPublic
+        - event: SystemUnpaused(indexed address,indexed address)
+          handler: handleSystemUnpaused
+        - event: TokenSet(indexed address,indexed address,address)
+          handler: handleTokenSet
+        - event: VaultClosed(indexed address,uint256)
+          handler: handleVaultClosed
+        - event: VaultLiquidated(indexed address,uint256)
+          handler: handleVaultLiquidated
+        - event: VaultOpened(indexed address,uint256)
+          handler: handleVaultOpened
+      file: ./src/vault.ts
