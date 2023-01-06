@@ -64,6 +64,8 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
   position.amount1 = info.getTokensOwed1();
   position.vault = vaultEntity.id;
   position.liquidity = info.getLiquidity();
+  position.tickLower = info.getTickLower();
+  position.tickUpper = info.getTickUpper();
   position.save();
 }
 

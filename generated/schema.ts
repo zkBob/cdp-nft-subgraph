@@ -154,4 +154,22 @@ export class uniV3Position extends Entity {
   set amount1(value: BigInt) {
     this.set("amount1", Value.fromBigInt(value));
   }
+
+  get tickLower(): i32 {
+    let value = this.get("tickLower");
+    return value!.toI32();
+  }
+
+  set tickLower(value: i32) {
+    this.set("tickLower", Value.fromI32(value));
+  }
+
+  get tickUpper(): i32 {
+    let value = this.get("tickUpper");
+    return value!.toI32();
+  }
+
+  set tickUpper(value: i32) {
+    this.set("tickUpper", Value.fromI32(value));
+  }
 }

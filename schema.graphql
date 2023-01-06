@@ -13,4 +13,6 @@ type uniV3Position @entity {
   token1: Bytes!
   amount0: BigInt!
   amount1: BigInt!
+  tickLower: Int!
+  tickUpper: Int!
 }
