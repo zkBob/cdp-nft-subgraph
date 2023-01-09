@@ -2,10 +2,39 @@ type Vault @entity {
   id: String!
   debt: BigInt!
   lastDebtUpdate: BigInt!
-  uniV3Positions: [uniV3Position!]! @derivedFrom(field: "vault")
+  uniV3Positions: [UniV3Position!]! @derivedFrom(field: "vault")
 }
 
-type uniV3Position @entity {
+type DebtMintedEntity @entity {
+  id: String!
+  vault: Vault!
+  debtIncrease: BigInt!
+}
+
+type DebtBurnedEntity @entity {
+  id: String!
+  vault: Vault!
+  debtDecrease: BigInt!
+}
+
+type Deposit @entity {
+  id: String!
+  vault: Vault!
+  uniV3Position: BigInt!
+}
+
+type Withdrawal @entity {
+  id: String!
+  vault: Vault!
+  uniV3Position: BigInt!
+}
+
+type LiquidationThreshold @entity {
+  id: String!
+  liquidationThreshold: BigInt!
+}
+
+type UniV3Position @entity {
   id: String!
   vault: Vault!
   liquidity: BigInt!

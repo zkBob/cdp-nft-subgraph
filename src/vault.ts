@@ -1,4 +1,4 @@
-import { BigInt, store } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, store } from "@graphprotocol/graph-ts"
 import {
   Vault as VaultContract,
   CollateralDeposited,
@@ -6,10 +6,13 @@ import {
   DebtBurned,
   DebtMinted,
   VaultLiquidated,
-  VaultOpened
+  VaultOpened,
+  WhitelistedPoolSet,
+  WhitelistedPoolRevoked,
+  LiquidationThresholdSet
 } from "../generated/Vault/Vault"
 import { UniV3PositionManager } from "../generated/UniV3PositionManager/UniV3PositionManager"
-import { uniV3Position, Vault } from "../generated/schema"
+import { DebtBurnedEntity, DebtMintedEntity, Deposit, LiquidationThreshold, UniV3Position, Vault, Withdrawal } from "../generated/schema"
 
 
 export function handleVaultOpened(event: VaultOpened): void {
@@ -28,6 +31,10 @@ export function handleDebtMinted(event: DebtMinted): void {
   vaultEntity.debt = cdp.getOverallDebt(event.params.vaultId);
   vaultEntity.lastDebtUpdate = event.block.timestamp;
   vaultEntity.save();
+
+  let minted = new DebtMintedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
+  minted.debtIncrease = BigInt.fromI32(0);
+  minted.save();
 }
 
 export function handleDebtBurned(event: DebtBurned): void {
@@ -39,14 +46,22 @@ export function handleDebtBurned(event: DebtBurned): void {
   vaultEntity.debt = cdp.getOverallDebt(event.params.vaultId);
   vaultEntity.lastDebtUpdate = event.block.timestamp;
   vaultEntity.save();
+
+  let burned = new DebtBurnedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
+  burned.debtDecrease = BigInt.fromI32(0);
+  burned.save();
 }
 
 export function handleCollateralWithdrew(event: CollateralWithdrew): void {
-  let position = uniV3Position.load(event.params.tokenId.toString());
+  let position = UniV3Position.load(event.params.tokenId.toString());
   if (position == null) {
     return;
   }
   store.remove('uniV3Position', position.id.toString());
+
+  let withdrawal = new Withdrawal(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
+  withdrawal.uniV3Position = event.params.tokenId;
+  withdrawal.save();
 }
 
 export function handleCollateralDeposited(event: CollateralDeposited): void {
@@ -54,7 +69,7 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
   if (vaultEntity == null) {
     return;
   }
-  let position = new uniV3Position(event.params.tokenId.toString());
+  let position = new UniV3Position(event.params.tokenId.toString());
   let cdp = VaultContract.bind(event.address);
   let positionManager = UniV3PositionManager.bind(cdp.positionManager());
   let info = positionManager.positions(event.params.tokenId);
@@ -67,6 +82,10 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
   position.tickLower = info.getTickLower();
   position.tickUpper = info.getTickUpper();
   position.save();
+
+  let deposit = new Deposit(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
+  deposit.uniV3Position = event.params.tokenId;
+  deposit.save();
 }
 
 export function handleVaultLiquidated(event: VaultLiquidated): void {
@@ -79,5 +98,25 @@ export function handleVaultLiquidated(event: VaultLiquidated): void {
     let position = positions[i];
     store.remove('uniV3Position', position);
   }
-  store.remove('Vault', vault.id);
+  // INFO: vault can be reopened 
+  // so, we don't need to remove the vault itself
+}
+
+export function handleWhitelistedPoolSet(event: WhitelistedPoolSet): void {
+  let lt = new LiquidationThreshold(event.params.pool.toHexString());
+  lt.liquidationThreshold = BigInt.fromI32(0);
+  lt.save();
+}
+
+export function handleWhitelistedPoolRevoked(event: WhitelistedPoolRevoked): void {
+  store.remove('LiquidationThreshold', event.params.pool.toHexString());
+}
+
+export function handleLiquidationThresholdSet(event: LiquidationThresholdSet): void {
+  let lt = LiquidationThreshold.load(event.params.pool.toHexString());
+  if (lt == null) {
+    return;
+  }
+  lt.liquidationThreshold = event.params.liquidationThresholdD_;
+  lt.save();
 }

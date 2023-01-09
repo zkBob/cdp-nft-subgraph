@@ -70,7 +70,7 @@ export class Vault extends Entity {
   }
 }
 
-export class uniV3Position extends Entity {
+export class DebtMintedEntity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -78,18 +78,265 @@ export class uniV3Position extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save uniV3Position entity without an ID");
+    assert(id != null, "Cannot save DebtMintedEntity entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type uniV3Position must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type DebtMintedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("uniV3Position", id.toString(), this);
+      store.set("DebtMintedEntity", id.toString(), this);
     }
   }
 
-  static load(id: string): uniV3Position | null {
-    return changetype<uniV3Position | null>(store.get("uniV3Position", id));
+  static load(id: string): DebtMintedEntity | null {
+    return changetype<DebtMintedEntity | null>(
+      store.get("DebtMintedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
+  }
+
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
+  }
+
+  get debtIncrease(): BigInt {
+    let value = this.get("debtIncrease");
+    return value!.toBigInt();
+  }
+
+  set debtIncrease(value: BigInt) {
+    this.set("debtIncrease", Value.fromBigInt(value));
+  }
+}
+
+export class DebtBurnedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save DebtBurnedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type DebtBurnedEntity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("DebtBurnedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DebtBurnedEntity | null {
+    return changetype<DebtBurnedEntity | null>(
+      store.get("DebtBurnedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
+  }
+
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
+  }
+
+  get debtDecrease(): BigInt {
+    let value = this.get("debtDecrease");
+    return value!.toBigInt();
+  }
+
+  set debtDecrease(value: BigInt) {
+    this.set("debtDecrease", Value.fromBigInt(value));
+  }
+}
+
+export class Deposit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Deposit entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Deposit must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Deposit", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Deposit | null {
+    return changetype<Deposit | null>(store.get("Deposit", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
+  }
+
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
+  }
+
+  get uniV3Position(): BigInt {
+    let value = this.get("uniV3Position");
+    return value!.toBigInt();
+  }
+
+  set uniV3Position(value: BigInt) {
+    this.set("uniV3Position", Value.fromBigInt(value));
+  }
+}
+
+export class Withdrawal extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Withdrawal entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Withdrawal must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Withdrawal", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Withdrawal | null {
+    return changetype<Withdrawal | null>(store.get("Withdrawal", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get vault(): string {
+    let value = this.get("vault");
+    return value!.toString();
+  }
+
+  set vault(value: string) {
+    this.set("vault", Value.fromString(value));
+  }
+
+  get uniV3Position(): BigInt {
+    let value = this.get("uniV3Position");
+    return value!.toBigInt();
+  }
+
+  set uniV3Position(value: BigInt) {
+    this.set("uniV3Position", Value.fromBigInt(value));
+  }
+}
+
+export class LiquidationThreshold extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save LiquidationThreshold entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type LiquidationThreshold must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("LiquidationThreshold", id.toString(), this);
+    }
+  }
+
+  static load(id: string): LiquidationThreshold | null {
+    return changetype<LiquidationThreshold | null>(
+      store.get("LiquidationThreshold", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get liquidationThreshold(): BigInt {
+    let value = this.get("liquidationThreshold");
+    return value!.toBigInt();
+  }
+
+  set liquidationThreshold(value: BigInt) {
+    this.set("liquidationThreshold", Value.fromBigInt(value));
+  }
+}
+
+export class UniV3Position extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save UniV3Position entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type UniV3Position must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("UniV3Position", id.toString(), this);
+    }
+  }
+
+  static load(id: string): UniV3Position | null {
+    return changetype<UniV3Position | null>(store.get("UniV3Position", id));
   }
 
   get id(): string {

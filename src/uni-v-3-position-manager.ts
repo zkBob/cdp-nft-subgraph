@@ -5,12 +5,12 @@ import {
   UniV3PositionManager,
 } from "../generated/UniV3PositionManager/UniV3PositionManager"
 import {
-  uniV3Position
+  UniV3Position
 } from "../generated/schema"
 
 
 export function handleCollect(event: CollectEvent): void {
-  let entity = uniV3Position.load(event.params.tokenId.toString());
+  let entity = UniV3Position.load(event.params.tokenId.toString());
   if (entity == null) {
     return;
   }
@@ -22,7 +22,7 @@ export function handleCollect(event: CollectEvent): void {
 }
 
 export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
-  let entity = uniV3Position.load(event.params.tokenId.toString());
+  let entity = UniV3Position.load(event.params.tokenId.toString());
   if (entity == null) {
     return;
   }
@@ -35,7 +35,7 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
 }
 
 export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
-  let entity = uniV3Position.load(event.params.tokenId.toString());
+  let entity = UniV3Position.load(event.params.tokenId.toString());
   if (entity == null) {
     return;
   }
