@@ -1,7 +1,7 @@
 {
   "goerli": {
     "Vault": {
-      "address": "0x92843f45faff5cc40377f7bfae2e0808712ba1f3"
+      "address": "0xD7d5317F5019a0EA8fD63Ec7aad1DaAE2141dc3D"
     },
     "UniV3PositionManager": {
       "address": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"

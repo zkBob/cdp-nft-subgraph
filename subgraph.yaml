@@ -6,9 +6,9 @@ dataSources:
     name: Vault
     network: goerli
     source:
-      address: "0x92843f45faff5cc40377f7bfae2e0808712ba1f3"
+      address: "0xD7d5317F5019a0EA8fD63Ec7aad1DaAE2141dc3D"
       abi: Vault
-      startBlock: 8000490
+      startBlock: 8298434
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

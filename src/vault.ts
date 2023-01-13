@@ -33,7 +33,8 @@ export function handleDebtMinted(event: DebtMinted): void {
   vaultEntity.save();
 
   let minted = new DebtMintedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
-  minted.debtIncrease = BigInt.fromI32(0);
+  minted.debtIncrease = event.params.amount;
+  minted.vault = event.params.vaultId.toString();
   minted.save();
 }
 
@@ -48,7 +49,8 @@ export function handleDebtBurned(event: DebtBurned): void {
   vaultEntity.save();
 
   let burned = new DebtBurnedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
-  burned.debtDecrease = BigInt.fromI32(0);
+  burned.debtDecrease = event.params.amount;
+  burned.vault = event.params.vaultId.toString();
   burned.save();
 }
 
@@ -61,6 +63,7 @@ export function handleCollateralWithdrew(event: CollateralWithdrew): void {
 
   let withdrawal = new Withdrawal(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
   withdrawal.uniV3Position = event.params.tokenId;
+  withdrawal.vault = event.params.vaultId.toString();
   withdrawal.save();
 }
 
@@ -85,6 +88,7 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
 
   let deposit = new Deposit(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
   deposit.uniV3Position = event.params.tokenId;
+  deposit.vault = event.params.vaultId.toString();
   deposit.save();
 }
 
