@@ -1,6 +1,8 @@
 type Vault @entity {
   id: String!
-  debt: BigInt!
+  vaultDebt: BigInt!
+  stabilisationFeeVaultSnapshot: BigInt!
+  globalStabilisationFeePerUSDVaultSnapshotD: BigInt!
   lastDebtUpdate: BigInt!
   uniV3Positions: [UniV3Position!]! @derivedFrom(field: "vault")
 }

@@ -17,7 +17,9 @@ import { DebtBurnedEntity, DebtMintedEntity, Deposit, LiquidationThreshold, UniV
 
 export function handleVaultOpened(event: VaultOpened): void {
   let vault = new Vault(event.params.vaultId.toString());
-  vault.debt = BigInt.fromI32(0);
+  vault.vaultDebt = BigInt.fromI32(0);
+  vault.stabilisationFeeVaultSnapshot = BigInt.fromI32(0);
+  vault.globalStabilisationFeePerUSDVaultSnapshotD = BigInt.fromI32(0);
   vault.lastDebtUpdate = event.block.timestamp;
   vault.save();
 }
@@ -28,7 +30,9 @@ export function handleDebtMinted(event: DebtMinted): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.debt = cdp.getOverallDebt(event.params.vaultId);
+  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
+  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
+  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
   vaultEntity.lastDebtUpdate = event.block.timestamp;
   vaultEntity.save();
 
@@ -44,7 +48,9 @@ export function handleDebtBurned(event: DebtBurned): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.debt = cdp.getOverallDebt(event.params.vaultId);
+  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
+  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
+  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
   vaultEntity.lastDebtUpdate = event.block.timestamp;
   vaultEntity.save();
 

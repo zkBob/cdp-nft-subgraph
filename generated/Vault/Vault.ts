@@ -1290,6 +1290,31 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  globalStabilisationFeePerUSDVaultSnapshotD(param0: BigInt): BigInt {
+    let result = super.call(
+      "globalStabilisationFeePerUSDVaultSnapshotD",
+      "globalStabilisationFeePerUSDVaultSnapshotD(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_globalStabilisationFeePerUSDVaultSnapshotD(
+    param0: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "globalStabilisationFeePerUSDVaultSnapshotD",
+      "globalStabilisationFeePerUSDVaultSnapshotD(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   hasRole(role: Bytes, account: Address): boolean {
     let result = super.call("hasRole", "hasRole(bytes32,address):(bool)", [
       ethereum.Value.fromFixedBytes(role),
