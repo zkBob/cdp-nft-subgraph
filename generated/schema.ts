@@ -369,6 +369,15 @@ export class UniV3Position extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get liquidationThreshold(): string {
+    let value = this.get("liquidationThreshold");
+    return value!.toString();
+  }
+
+  set liquidationThreshold(value: string) {
+    this.set("liquidationThreshold", Value.fromString(value));
+  }
+
   get vault(): string {
     let value = this.get("vault");
     return value!.toString();

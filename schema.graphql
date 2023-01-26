@@ -38,6 +38,7 @@ type LiquidationThreshold @entity {
 
 type UniV3Position @entity {
   id: String!
+  liquidationThreshold: LiquidationThreshold!
   vault: Vault!
   liquidity: BigInt!
   token0: Bytes!
