@@ -6,9 +6,9 @@ dataSources:
     name: Vault
     network: goerli
     source:
-      address: "0xe0338003e3f11385266478525aa12435e8F24b33"
+      address: "0x340C94b01bA55D4fC4848Aad9b878e0a16340138"
       abi: Vault
-      startBlock: 8368249
+      startBlock: 8570755
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -48,7 +48,7 @@ dataSources:
     source:
       address: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
       abi: UniV3PositionManager
-      startBlock: 8368249
+      startBlock: 8570755
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
