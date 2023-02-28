@@ -12,12 +12,15 @@ import {
   LiquidationThresholdSet
 } from "../generated/Vault/Vault"
 import { UniV3PositionManager } from "../generated/UniV3PositionManager/UniV3PositionManager"
+import { UniV3Factory } from "../generated/UniV3PositionManager/UniV3Factory"
 import { DebtBurnedEntity, DebtMintedEntity, Deposit, LiquidationThreshold, UniV3Position, Vault, Withdrawal } from "../generated/schema"
 
 
 export function handleVaultOpened(event: VaultOpened): void {
   let vault = new Vault(event.params.vaultId.toString());
-  vault.debt = BigInt.fromI32(0);
+  vault.vaultDebt = BigInt.fromI32(0);
+  vault.stabilisationFeeVaultSnapshot = BigInt.fromI32(0);
+  vault.globalStabilisationFeePerUSDVaultSnapshotD = BigInt.fromI32(0);
   vault.lastDebtUpdate = event.block.timestamp;
   vault.save();
 }
@@ -28,7 +31,9 @@ export function handleDebtMinted(event: DebtMinted): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.debt = cdp.getOverallDebt(event.params.vaultId);
+  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
+  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
+  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
   vaultEntity.lastDebtUpdate = event.block.timestamp;
   vaultEntity.save();
 
@@ -44,7 +49,9 @@ export function handleDebtBurned(event: DebtBurned): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.debt = cdp.getOverallDebt(event.params.vaultId);
+  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
+  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
+  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
   vaultEntity.lastDebtUpdate = event.block.timestamp;
   vaultEntity.save();
 
@@ -76,6 +83,8 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
   let cdp = VaultContract.bind(event.address);
   let positionManager = UniV3PositionManager.bind(cdp.positionManager());
   let info = positionManager.positions(event.params.tokenId);
+  let factory = UniV3Factory.bind(positionManager.factory());
+  let pool = factory.getPool(info.getToken0(), info.getToken1(), info.getFee());
   position.token0 = info.getToken0();
   position.token1 = info.getToken1();
   position.amount0 = info.getTokensOwed0();
@@ -84,6 +93,7 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
   position.liquidity = info.getLiquidity();
   position.tickLower = info.getTickLower();
   position.tickUpper = info.getTickUpper();
+  position.liquidationThreshold = pool.toHexString();
   position.save();
 
   let deposit = new Deposit(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));

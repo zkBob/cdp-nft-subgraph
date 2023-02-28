@@ -42,13 +42,34 @@ export class Vault extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get debt(): BigInt {
-    let value = this.get("debt");
+  get vaultDebt(): BigInt {
+    let value = this.get("vaultDebt");
     return value!.toBigInt();
   }
 
-  set debt(value: BigInt) {
-    this.set("debt", Value.fromBigInt(value));
+  set vaultDebt(value: BigInt) {
+    this.set("vaultDebt", Value.fromBigInt(value));
+  }
+
+  get stabilisationFeeVaultSnapshot(): BigInt {
+    let value = this.get("stabilisationFeeVaultSnapshot");
+    return value!.toBigInt();
+  }
+
+  set stabilisationFeeVaultSnapshot(value: BigInt) {
+    this.set("stabilisationFeeVaultSnapshot", Value.fromBigInt(value));
+  }
+
+  get globalStabilisationFeePerUSDVaultSnapshotD(): BigInt {
+    let value = this.get("globalStabilisationFeePerUSDVaultSnapshotD");
+    return value!.toBigInt();
+  }
+
+  set globalStabilisationFeePerUSDVaultSnapshotD(value: BigInt) {
+    this.set(
+      "globalStabilisationFeePerUSDVaultSnapshotD",
+      Value.fromBigInt(value)
+    );
   }
 
   get lastDebtUpdate(): BigInt {
@@ -346,6 +367,15 @@ export class UniV3Position extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get liquidationThreshold(): string {
+    let value = this.get("liquidationThreshold");
+    return value!.toString();
+  }
+
+  set liquidationThreshold(value: string) {
+    this.set("liquidationThreshold", Value.fromString(value));
   }
 
   get vault(): string {

@@ -6,9 +6,9 @@ dataSources:
     name: Vault
     network: goerli
     source:
-      address: "0xD7d5317F5019a0EA8fD63Ec7aad1DaAE2141dc3D"
+      address: "0xe0338003e3f11385266478525aa12435e8F24b33"
       abi: Vault
-      startBlock: 8298434
+      startBlock: 8368249
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -20,6 +20,8 @@ dataSources:
           file: ./abis/Vault.json
         - name: UniV3PositionManager
           file: ./abis/UniV3PositionManager.json
+        - name: UniV3Factory
+          file: ./abis/UniV3Factory.json
       eventHandlers:
         - event: CollateralDeposited(indexed address,uint256,uint256)
           handler: handleCollateralDeposited
@@ -46,7 +48,7 @@ dataSources:
     source:
       address: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
       abi: UniV3PositionManager
-      startBlock: 8000490
+      startBlock: 8368249
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
