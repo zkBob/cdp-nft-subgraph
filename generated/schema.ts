@@ -42,43 +42,13 @@ export class Vault extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get vaultDebt(): BigInt {
-    let value = this.get("vaultDebt");
+  get vaultNormalizedDebt(): BigInt {
+    let value = this.get("vaultNormalizedDebt");
     return value!.toBigInt();
   }
 
-  set vaultDebt(value: BigInt) {
-    this.set("vaultDebt", Value.fromBigInt(value));
-  }
-
-  get stabilisationFeeVaultSnapshot(): BigInt {
-    let value = this.get("stabilisationFeeVaultSnapshot");
-    return value!.toBigInt();
-  }
-
-  set stabilisationFeeVaultSnapshot(value: BigInt) {
-    this.set("stabilisationFeeVaultSnapshot", Value.fromBigInt(value));
-  }
-
-  get globalStabilisationFeePerUSDVaultSnapshotD(): BigInt {
-    let value = this.get("globalStabilisationFeePerUSDVaultSnapshotD");
-    return value!.toBigInt();
-  }
-
-  set globalStabilisationFeePerUSDVaultSnapshotD(value: BigInt) {
-    this.set(
-      "globalStabilisationFeePerUSDVaultSnapshotD",
-      Value.fromBigInt(value)
-    );
-  }
-
-  get lastDebtUpdate(): BigInt {
-    let value = this.get("lastDebtUpdate");
-    return value!.toBigInt();
-  }
-
-  set lastDebtUpdate(value: BigInt) {
-    this.set("lastDebtUpdate", Value.fromBigInt(value));
+  set vaultNormalizedDebt(value: BigInt) {
+    this.set("vaultNormalizedDebt", Value.fromBigInt(value));
   }
 
   get uniV3Positions(): Array<string> {

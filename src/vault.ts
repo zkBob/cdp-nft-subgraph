@@ -18,10 +18,7 @@ import { DebtBurnedEntity, DebtMintedEntity, Deposit, LiquidationThreshold, UniV
 
 export function handleVaultOpened(event: VaultOpened): void {
   let vault = new Vault(event.params.vaultId.toString());
-  vault.vaultDebt = BigInt.fromI32(0);
-  vault.stabilisationFeeVaultSnapshot = BigInt.fromI32(0);
-  vault.globalStabilisationFeePerUSDVaultSnapshotD = BigInt.fromI32(0);
-  vault.lastDebtUpdate = event.block.timestamp;
+  vault.vaultNormalizedDebt = BigInt.fromI32(0);
   vault.save();
 }
 
@@ -31,10 +28,7 @@ export function handleDebtMinted(event: DebtMinted): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
-  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
-  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
-  vaultEntity.lastDebtUpdate = event.block.timestamp;
+  vaultEntity.vaultNormalizedDebt = cdp.vaultNormalizedDebt(event.params.vaultId);
   vaultEntity.save();
 
   let minted = new DebtMintedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
@@ -49,10 +43,7 @@ export function handleDebtBurned(event: DebtBurned): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
-  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
-  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
-  vaultEntity.lastDebtUpdate = event.block.timestamp;
+  vaultEntity.vaultNormalizedDebt = cdp.vaultNormalizedDebt(event.params.vaultId);
   vaultEntity.save();
 
   let burned = new DebtBurnedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
