@@ -265,7 +265,7 @@ export class Withdrawal extends Entity {
   }
 }
 
-export class LiquidationThreshold extends Entity {
+export class PoolInfo extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -273,20 +273,18 @@ export class LiquidationThreshold extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save LiquidationThreshold entity without an ID");
+    assert(id != null, "Cannot save PoolInfo entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type LiquidationThreshold must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type PoolInfo must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("LiquidationThreshold", id.toString(), this);
+      store.set("PoolInfo", id.toString(), this);
     }
   }
 
-  static load(id: string): LiquidationThreshold | null {
-    return changetype<LiquidationThreshold | null>(
-      store.get("LiquidationThreshold", id)
-    );
+  static load(id: string): PoolInfo | null {
+    return changetype<PoolInfo | null>(store.get("PoolInfo", id));
   }
 
   get id(): string {
@@ -305,6 +303,24 @@ export class LiquidationThreshold extends Entity {
 
   set liquidationThreshold(value: BigInt) {
     this.set("liquidationThreshold", Value.fromBigInt(value));
+  }
+
+  get borrowThreshold(): BigInt {
+    let value = this.get("borrowThreshold");
+    return value!.toBigInt();
+  }
+
+  set borrowThreshold(value: BigInt) {
+    this.set("borrowThreshold", Value.fromBigInt(value));
+  }
+
+  get minWidth(): i32 {
+    let value = this.get("minWidth");
+    return value!.toI32();
+  }
+
+  set minWidth(value: i32) {
+    this.set("minWidth", Value.fromI32(value));
   }
 }
 
@@ -339,13 +355,13 @@ export class UniV3Position extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get liquidationThreshold(): string {
-    let value = this.get("liquidationThreshold");
+  get pool(): string {
+    let value = this.get("pool");
     return value!.toString();
   }
 
-  set liquidationThreshold(value: string) {
-    this.set("liquidationThreshold", Value.fromString(value));
+  set pool(value: string) {
+    this.set("pool", Value.fromString(value));
   }
 
   get vault(): string {

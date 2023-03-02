@@ -10,6 +10,36 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class BorrowThresholdChanged extends ethereum.Event {
+  get params(): BorrowThresholdChanged__Params {
+    return new BorrowThresholdChanged__Params(this);
+  }
+}
+
+export class BorrowThresholdChanged__Params {
+  _event: BorrowThresholdChanged;
+
+  constructor(event: BorrowThresholdChanged) {
+    this._event = event;
+  }
+
+  get origin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get sender(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get pool(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get borrowThreshold(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
 export class CollateralDeposited extends ethereum.Event {
   get params(): CollateralDeposited__Params {
     return new CollateralDeposited__Params(this);
@@ -166,16 +196,16 @@ export class LiquidationPremiumChanged__Params {
   }
 }
 
-export class LiquidationThresholdSet extends ethereum.Event {
-  get params(): LiquidationThresholdSet__Params {
-    return new LiquidationThresholdSet__Params(this);
+export class LiquidationThresholdChanged extends ethereum.Event {
+  get params(): LiquidationThresholdChanged__Params {
+    return new LiquidationThresholdChanged__Params(this);
   }
 }
 
-export class LiquidationThresholdSet__Params {
-  _event: LiquidationThresholdSet;
+export class LiquidationThresholdChanged__Params {
+  _event: LiquidationThresholdChanged;
 
-  constructor(event: LiquidationThresholdSet) {
+  constructor(event: LiquidationThresholdChanged) {
     this._event = event;
   }
 
@@ -191,7 +221,7 @@ export class LiquidationThresholdSet__Params {
     return this._event.parameters[2].value.toAddress();
   }
 
-  get liquidationThresholdD_(): BigInt {
+  get liquidationThreshold(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 }
@@ -318,16 +348,16 @@ export class MinSingleNftCollateralChanged__Params {
   }
 }
 
-export class MinimalWidthUpdated extends ethereum.Event {
-  get params(): MinimalWidthUpdated__Params {
-    return new MinimalWidthUpdated__Params(this);
+export class MinWidthChanged extends ethereum.Event {
+  get params(): MinWidthChanged__Params {
+    return new MinWidthChanged__Params(this);
   }
 }
 
-export class MinimalWidthUpdated__Params {
-  _event: MinimalWidthUpdated;
+export class MinWidthChanged__Params {
+  _event: MinWidthChanged;
 
-  constructor(event: MinimalWidthUpdated) {
+  constructor(event: MinWidthChanged) {
     this._event = event;
   }
 
@@ -343,7 +373,7 @@ export class MinimalWidthUpdated__Params {
     return this._event.parameters[2].value.toAddress();
   }
 
-  get width(): i32 {
+  get minWidth(): i32 {
     return this._event.parameters[3].value.toI32();
   }
 }
@@ -606,80 +636,35 @@ export class VaultOpened__Params {
   }
 }
 
-export class WhitelistedPoolRevoked extends ethereum.Event {
-  get params(): WhitelistedPoolRevoked__Params {
-    return new WhitelistedPoolRevoked__Params(this);
-  }
-}
-
-export class WhitelistedPoolRevoked__Params {
-  _event: WhitelistedPoolRevoked;
-
-  constructor(event: WhitelistedPoolRevoked) {
-    this._event = event;
-  }
-
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get pool(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
-export class WhitelistedPoolSet extends ethereum.Event {
-  get params(): WhitelistedPoolSet__Params {
-    return new WhitelistedPoolSet__Params(this);
-  }
-}
-
-export class WhitelistedPoolSet__Params {
-  _event: WhitelistedPoolSet;
-
-  constructor(event: WhitelistedPoolSet) {
-    this._event = event;
-  }
-
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get pool(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
 export class Vault__calculateVaultCollateralResult {
   value0: BigInt;
   value1: BigInt;
+  value2: BigInt;
 
-  constructor(value0: BigInt, value1: BigInt) {
+  constructor(value0: BigInt, value1: BigInt, value2: BigInt) {
     this.value0 = value0;
     this.value1 = value1;
+    this.value2 = value2;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
   }
 
-  getOverallCollateral(): BigInt {
+  getTotal(): BigInt {
     return this.value0;
   }
 
-  getAdjustedCollateral(): BigInt {
+  getLiquidationLimit(): BigInt {
     return this.value1;
+  }
+
+  getBorrowLimit(): BigInt {
+    return this.value2;
   }
 }
 
@@ -869,6 +854,20 @@ export class Vault__decreaseLiquidityInputParamsStruct extends ethereum.Tuple {
   }
 }
 
+export class Vault__poolParamsResultValue0Struct extends ethereum.Tuple {
+  get liquidationThreshold(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get borrowThreshold(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get minWidth(): i32 {
+    return this[2].toI32();
+  }
+}
+
 export class Vault__protocolParamsResultValue0Struct extends ethereum.Tuple {
   get maxDebtPerVault(): BigInt {
     return this[0].toBigInt();
@@ -1030,13 +1029,14 @@ export class Vault extends ethereum.SmartContract {
   ): Vault__calculateVaultCollateralResult {
     let result = super.call(
       "calculateVaultCollateral",
-      "calculateVaultCollateral(uint256):(uint256,uint256)",
+      "calculateVaultCollateral(uint256):(uint256,uint256,uint256)",
       [ethereum.Value.fromUnsignedBigInt(vaultId)]
     );
 
     return new Vault__calculateVaultCollateralResult(
       result[0].toBigInt(),
-      result[1].toBigInt()
+      result[1].toBigInt(),
+      result[2].toBigInt()
     );
   }
 
@@ -1045,7 +1045,7 @@ export class Vault extends ethereum.SmartContract {
   ): ethereum.CallResult<Vault__calculateVaultCollateralResult> {
     let result = super.tryCall(
       "calculateVaultCollateral",
-      "calculateVaultCollateral(uint256):(uint256,uint256)",
+      "calculateVaultCollateral(uint256):(uint256,uint256,uint256)",
       [ethereum.Value.fromUnsignedBigInt(vaultId)]
     );
     if (result.reverted) {
@@ -1055,7 +1055,8 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new Vault__calculateVaultCollateralResult(
         value[0].toBigInt(),
-        value[1].toBigInt()
+        value[1].toBigInt(),
+        value[2].toBigInt()
       )
     );
   }
@@ -1402,29 +1403,6 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  isPoolWhitelisted(pool: Address): boolean {
-    let result = super.call(
-      "isPoolWhitelisted",
-      "isPoolWhitelisted(address):(bool)",
-      [ethereum.Value.fromAddress(pool)]
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_isPoolWhitelisted(pool: Address): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "isPoolWhitelisted",
-      "isPoolWhitelisted(address):(bool)",
-      [ethereum.Value.fromAddress(pool)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
   isPublic(): boolean {
     let result = super.call("isPublic", "isPublic():(bool)", []);
 
@@ -1438,29 +1416,6 @@ export class Vault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  liquidationThresholdD(param0: Address): BigInt {
-    let result = super.call(
-      "liquidationThresholdD",
-      "liquidationThresholdD(address):(uint256)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_liquidationThresholdD(param0: Address): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "liquidationThresholdD",
-      "liquidationThresholdD(address):(uint256)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   liquidatorsAllowlist(): Array<Address> {
@@ -1484,27 +1439,6 @@ export class Vault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddressArray());
-  }
-
-  minimalWidth(param0: Address): i32 {
-    let result = super.call("minimalWidth", "minimalWidth(address):(uint24)", [
-      ethereum.Value.fromAddress(param0)
-    ]);
-
-    return result[0].toI32();
-  }
-
-  try_minimalWidth(param0: Address): ethereum.CallResult<i32> {
-    let result = super.tryCall(
-      "minimalWidth",
-      "minimalWidth(address):(uint24)",
-      [ethereum.Value.fromAddress(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
   mintDebtFromScratch(nft: BigInt, amount: BigInt): BigInt {
@@ -1537,6 +1471,21 @@ export class Vault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  minter(): Address {
+    let result = super.call("minter", "minter():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_minter(): ethereum.CallResult<Address> {
+    let result = super.tryCall("minter", "minter():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   multicall(data: Array<Bytes>): Array<Bytes> {
@@ -1698,6 +1647,33 @@ export class Vault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  poolParams(pool: Address): Vault__poolParamsResultValue0Struct {
+    let result = super.call(
+      "poolParams",
+      "poolParams(address):((uint32,uint32,uint24))",
+      [ethereum.Value.fromAddress(pool)]
+    );
+
+    return changetype<Vault__poolParamsResultValue0Struct>(result[0].toTuple());
+  }
+
+  try_poolParams(
+    pool: Address
+  ): ethereum.CallResult<Vault__poolParamsResultValue0Struct> {
+    let result = super.tryCall(
+      "poolParams",
+      "poolParams(address):((uint32,uint32,uint24))",
+      [ethereum.Value.fromAddress(pool)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      changetype<Vault__poolParamsResultValue0Struct>(value[0].toTuple())
+    );
   }
 
   positionManager(): Address {
@@ -1979,29 +1955,6 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  whitelistedPool(i: BigInt): Address {
-    let result = super.call(
-      "whitelistedPool",
-      "whitelistedPool(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(i)]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_whitelistedPool(i: BigInt): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "whitelistedPool",
-      "whitelistedPool(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(i)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   withdrawOwed(vaultId: BigInt, to: Address, maxAmount: BigInt): BigInt {
     let result = super.call(
       "withdrawOwed",
@@ -2071,8 +2024,12 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[3].value.toAddress();
   }
 
-  get vaultRegistry_(): Address {
+  get minter_(): Address {
     return this._call.inputValues[4].value.toAddress();
+  }
+
+  get vaultRegistry_(): Address {
+    return this._call.inputValues[5].value.toAddress();
   }
 }
 
@@ -2354,40 +2311,6 @@ export class ChangeMinSingleNftCollateralCall__Outputs {
   _call: ChangeMinSingleNftCollateralCall;
 
   constructor(call: ChangeMinSingleNftCollateralCall) {
-    this._call = call;
-  }
-}
-
-export class ChangeMinimalWidthCall extends ethereum.Call {
-  get inputs(): ChangeMinimalWidthCall__Inputs {
-    return new ChangeMinimalWidthCall__Inputs(this);
-  }
-
-  get outputs(): ChangeMinimalWidthCall__Outputs {
-    return new ChangeMinimalWidthCall__Outputs(this);
-  }
-}
-
-export class ChangeMinimalWidthCall__Inputs {
-  _call: ChangeMinimalWidthCall;
-
-  constructor(call: ChangeMinimalWidthCall) {
-    this._call = call;
-  }
-
-  get pool(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get width(): i32 {
-    return this._call.inputValues[1].value.toI32();
-  }
-}
-
-export class ChangeMinimalWidthCall__Outputs {
-  _call: ChangeMinimalWidthCall;
-
-  constructor(call: ChangeMinimalWidthCall) {
     this._call = call;
   }
 }
@@ -3224,50 +3147,20 @@ export class RevokeRoleCall__Outputs {
   }
 }
 
-export class RevokeWhitelistedPoolCall extends ethereum.Call {
-  get inputs(): RevokeWhitelistedPoolCall__Inputs {
-    return new RevokeWhitelistedPoolCall__Inputs(this);
+export class SetPoolParamsCall extends ethereum.Call {
+  get inputs(): SetPoolParamsCall__Inputs {
+    return new SetPoolParamsCall__Inputs(this);
   }
 
-  get outputs(): RevokeWhitelistedPoolCall__Outputs {
-    return new RevokeWhitelistedPoolCall__Outputs(this);
-  }
-}
-
-export class RevokeWhitelistedPoolCall__Inputs {
-  _call: RevokeWhitelistedPoolCall;
-
-  constructor(call: RevokeWhitelistedPoolCall) {
-    this._call = call;
-  }
-
-  get pool(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get outputs(): SetPoolParamsCall__Outputs {
+    return new SetPoolParamsCall__Outputs(this);
   }
 }
 
-export class RevokeWhitelistedPoolCall__Outputs {
-  _call: RevokeWhitelistedPoolCall;
+export class SetPoolParamsCall__Inputs {
+  _call: SetPoolParamsCall;
 
-  constructor(call: RevokeWhitelistedPoolCall) {
-    this._call = call;
-  }
-}
-
-export class SetLiquidationThresholdCall extends ethereum.Call {
-  get inputs(): SetLiquidationThresholdCall__Inputs {
-    return new SetLiquidationThresholdCall__Inputs(this);
-  }
-
-  get outputs(): SetLiquidationThresholdCall__Outputs {
-    return new SetLiquidationThresholdCall__Outputs(this);
-  }
-}
-
-export class SetLiquidationThresholdCall__Inputs {
-  _call: SetLiquidationThresholdCall;
-
-  constructor(call: SetLiquidationThresholdCall) {
+  constructor(call: SetPoolParamsCall) {
     this._call = call;
   }
 
@@ -3275,46 +3168,32 @@ export class SetLiquidationThresholdCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get liquidationThresholdD_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get params(): SetPoolParamsCallParamsStruct {
+    return changetype<SetPoolParamsCallParamsStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 }
 
-export class SetLiquidationThresholdCall__Outputs {
-  _call: SetLiquidationThresholdCall;
+export class SetPoolParamsCall__Outputs {
+  _call: SetPoolParamsCall;
 
-  constructor(call: SetLiquidationThresholdCall) {
+  constructor(call: SetPoolParamsCall) {
     this._call = call;
   }
 }
 
-export class SetWhitelistedPoolCall extends ethereum.Call {
-  get inputs(): SetWhitelistedPoolCall__Inputs {
-    return new SetWhitelistedPoolCall__Inputs(this);
+export class SetPoolParamsCallParamsStruct extends ethereum.Tuple {
+  get liquidationThreshold(): BigInt {
+    return this[0].toBigInt();
   }
 
-  get outputs(): SetWhitelistedPoolCall__Outputs {
-    return new SetWhitelistedPoolCall__Outputs(this);
-  }
-}
-
-export class SetWhitelistedPoolCall__Inputs {
-  _call: SetWhitelistedPoolCall;
-
-  constructor(call: SetWhitelistedPoolCall) {
-    this._call = call;
+  get borrowThreshold(): BigInt {
+    return this[1].toBigInt();
   }
 
-  get pool(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetWhitelistedPoolCall__Outputs {
-  _call: SetWhitelistedPoolCall;
-
-  constructor(call: SetWhitelistedPoolCall) {
-    this._call = call;
+  get minWidth(): i32 {
+    return this[2].toI32();
   }
 }
 

@@ -6,9 +6,9 @@ dataSources:
     name: Vault
     network: matic
     source:
-      address: "0x93B99138CE8406564f21a711Fb1b6b4ccdbb262c"
+      address: "0x313b0560fB65Df13F843Ff30Cab3393d8757A77D"
       abi: Vault
-      startBlock: 39845487
+      startBlock: 39875560
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -35,12 +35,12 @@ dataSources:
           handler: handleVaultLiquidated
         - event: VaultOpened(indexed address,uint256)
           handler: handleVaultOpened
-        - event: WhitelistedPoolSet(indexed address,indexed address,address)
-          handler: handleWhitelistedPoolSet
-        - event: WhitelistedPoolRevoked(indexed address,indexed address,address)
-          handler: handleWhitelistedPoolRevoked
-        - event: LiquidationThresholdSet(indexed address,indexed address,address,uint256)
-          handler: handleLiquidationThresholdSet
+        - event: LiquidationThresholdChanged(indexed address,indexed address,address,uint32)
+          handler: handleLiquidationThresholdChanged
+        - event: BorrowThresholdChanged(indexed address,indexed address,address,uint32)
+          handler: handleBorrowThresholdChanged
+        - event: MinWidthChanged(indexed address,indexed address,address,uint24)
+          handler: handleMinWidthChanged
       file: ./src/vault.ts
   - kind: ethereum
     name: UniV3PositionManager
@@ -48,7 +48,7 @@ dataSources:
     source:
       address: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
       abi: UniV3PositionManager
-      startBlock: 39845487
+      startBlock: 39875560
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
