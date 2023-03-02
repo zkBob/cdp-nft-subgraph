@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Vault
-    network: goerli
+    network: matic
     source:
-      address: "0x340C94b01bA55D4fC4848Aad9b878e0a16340138"
+      address: "0x93B99138CE8406564f21a711Fb1b6b4ccdbb262c"
       abi: Vault
-      startBlock: 8570755
+      startBlock: 39845487
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -44,11 +44,11 @@ dataSources:
       file: ./src/vault.ts
   - kind: ethereum
     name: UniV3PositionManager
-    network: goerli
+    network: matic
     source:
       address: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
       abi: UniV3PositionManager
-      startBlock: 8570755
+      startBlock: 39845487
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
