@@ -10,6 +10,36 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class BorrowThresholdChanged extends ethereum.Event {
+  get params(): BorrowThresholdChanged__Params {
+    return new BorrowThresholdChanged__Params(this);
+  }
+}
+
+export class BorrowThresholdChanged__Params {
+  _event: BorrowThresholdChanged;
+
+  constructor(event: BorrowThresholdChanged) {
+    this._event = event;
+  }
+
+  get origin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get sender(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get pool(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get borrowThreshold(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
 export class CollateralDeposited extends ethereum.Event {
   get params(): CollateralDeposited__Params {
     return new CollateralDeposited__Params(this);
@@ -166,16 +196,16 @@ export class LiquidationPremiumChanged__Params {
   }
 }
 
-export class LiquidationThresholdSet extends ethereum.Event {
-  get params(): LiquidationThresholdSet__Params {
-    return new LiquidationThresholdSet__Params(this);
+export class LiquidationThresholdChanged extends ethereum.Event {
+  get params(): LiquidationThresholdChanged__Params {
+    return new LiquidationThresholdChanged__Params(this);
   }
 }
 
-export class LiquidationThresholdSet__Params {
-  _event: LiquidationThresholdSet;
+export class LiquidationThresholdChanged__Params {
+  _event: LiquidationThresholdChanged;
 
-  constructor(event: LiquidationThresholdSet) {
+  constructor(event: LiquidationThresholdChanged) {
     this._event = event;
   }
 
@@ -191,8 +221,52 @@ export class LiquidationThresholdSet__Params {
     return this._event.parameters[2].value.toAddress();
   }
 
-  get liquidationThresholdD_(): BigInt {
+  get liquidationThreshold(): BigInt {
     return this._event.parameters[3].value.toBigInt();
+  }
+}
+
+export class LiquidationsPrivate extends ethereum.Event {
+  get params(): LiquidationsPrivate__Params {
+    return new LiquidationsPrivate__Params(this);
+  }
+}
+
+export class LiquidationsPrivate__Params {
+  _event: LiquidationsPrivate;
+
+  constructor(event: LiquidationsPrivate) {
+    this._event = event;
+  }
+
+  get origin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get sender(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class LiquidationsPublic extends ethereum.Event {
+  get params(): LiquidationsPublic__Params {
+    return new LiquidationsPublic__Params(this);
+  }
+}
+
+export class LiquidationsPublic__Params {
+  _event: LiquidationsPublic;
+
+  constructor(event: LiquidationsPublic) {
+    this._event = event;
+  }
+
+  get origin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get sender(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 }
 
@@ -271,6 +345,36 @@ export class MinSingleNftCollateralChanged__Params {
 
   get minSingleNftCollateral(): BigInt {
     return this._event.parameters[2].value.toBigInt();
+  }
+}
+
+export class MinWidthChanged extends ethereum.Event {
+  get params(): MinWidthChanged__Params {
+    return new MinWidthChanged__Params(this);
+  }
+}
+
+export class MinWidthChanged__Params {
+  _event: MinWidthChanged;
+
+  constructor(event: MinWidthChanged) {
+    this._event = event;
+  }
+
+  get origin(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get sender(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get pool(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get minWidth(): i32 {
+    return this._event.parameters[3].value.toI32();
   }
 }
 
@@ -532,106 +636,35 @@ export class VaultOpened__Params {
   }
 }
 
-export class VaultRegistrySet extends ethereum.Event {
-  get params(): VaultRegistrySet__Params {
-    return new VaultRegistrySet__Params(this);
-  }
-}
-
-export class VaultRegistrySet__Params {
-  _event: VaultRegistrySet;
-
-  constructor(event: VaultRegistrySet) {
-    this._event = event;
-  }
-
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get vaultRegistryAddress(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
-export class WhitelistedPoolRevoked extends ethereum.Event {
-  get params(): WhitelistedPoolRevoked__Params {
-    return new WhitelistedPoolRevoked__Params(this);
-  }
-}
-
-export class WhitelistedPoolRevoked__Params {
-  _event: WhitelistedPoolRevoked;
-
-  constructor(event: WhitelistedPoolRevoked) {
-    this._event = event;
-  }
-
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get pool(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
-export class WhitelistedPoolSet extends ethereum.Event {
-  get params(): WhitelistedPoolSet__Params {
-    return new WhitelistedPoolSet__Params(this);
-  }
-}
-
-export class WhitelistedPoolSet__Params {
-  _event: WhitelistedPoolSet;
-
-  constructor(event: WhitelistedPoolSet) {
-    this._event = event;
-  }
-
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
-  get pool(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-}
-
 export class Vault__calculateVaultCollateralResult {
   value0: BigInt;
   value1: BigInt;
+  value2: BigInt;
 
-  constructor(value0: BigInt, value1: BigInt) {
+  constructor(value0: BigInt, value1: BigInt, value2: BigInt) {
     this.value0 = value0;
     this.value1 = value1;
+    this.value2 = value2;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
     let map = new TypedMap<string, ethereum.Value>();
     map.set("value0", ethereum.Value.fromUnsignedBigInt(this.value0));
     map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
     return map;
   }
 
-  getOverallCollateral(): BigInt {
+  getTotal(): BigInt {
     return this.value0;
   }
 
-  getAdjustedCollateral(): BigInt {
+  getLiquidationLimit(): BigInt {
     return this.value1;
+  }
+
+  getBorrowLimit(): BigInt {
+    return this.value2;
   }
 }
 
@@ -821,6 +854,20 @@ export class Vault__decreaseLiquidityInputParamsStruct extends ethereum.Tuple {
   }
 }
 
+export class Vault__poolParamsResultValue0Struct extends ethereum.Tuple {
+  get liquidationThreshold(): BigInt {
+    return this[0].toBigInt();
+  }
+
+  get borrowThreshold(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get minWidth(): i32 {
+    return this[2].toI32();
+  }
+}
+
 export class Vault__protocolParamsResultValue0Struct extends ethereum.Tuple {
   get maxDebtPerVault(): BigInt {
     return this[0].toBigInt();
@@ -884,6 +931,29 @@ export class Vault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBytes());
+  }
+
+  DEBT_DENOMINATOR(): BigInt {
+    let result = super.call(
+      "DEBT_DENOMINATOR",
+      "DEBT_DENOMINATOR():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_DEBT_DENOMINATOR(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "DEBT_DENOMINATOR",
+      "DEBT_DENOMINATOR():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   DEFAULT_ADMIN_ROLE(): Bytes {
@@ -959,13 +1029,14 @@ export class Vault extends ethereum.SmartContract {
   ): Vault__calculateVaultCollateralResult {
     let result = super.call(
       "calculateVaultCollateral",
-      "calculateVaultCollateral(uint256):(uint256,uint256)",
+      "calculateVaultCollateral(uint256):(uint256,uint256,uint256)",
       [ethereum.Value.fromUnsignedBigInt(vaultId)]
     );
 
     return new Vault__calculateVaultCollateralResult(
       result[0].toBigInt(),
-      result[1].toBigInt()
+      result[1].toBigInt(),
+      result[2].toBigInt()
     );
   }
 
@@ -974,7 +1045,7 @@ export class Vault extends ethereum.SmartContract {
   ): ethereum.CallResult<Vault__calculateVaultCollateralResult> {
     let result = super.tryCall(
       "calculateVaultCollateral",
-      "calculateVaultCollateral(uint256):(uint256,uint256)",
+      "calculateVaultCollateral(uint256):(uint256,uint256,uint256)",
       [ethereum.Value.fromUnsignedBigInt(vaultId)]
     );
     if (result.reverted) {
@@ -984,7 +1055,8 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(
       new Vault__calculateVaultCollateralResult(
         value[0].toBigInt(),
-        value[1].toBigInt()
+        value[1].toBigInt(),
+        value[2].toBigInt()
       )
     );
   }
@@ -1219,102 +1291,6 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  globalStabilisationFeePerUSDD(): BigInt {
-    let result = super.call(
-      "globalStabilisationFeePerUSDD",
-      "globalStabilisationFeePerUSDD():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_globalStabilisationFeePerUSDD(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "globalStabilisationFeePerUSDD",
-      "globalStabilisationFeePerUSDD():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  globalStabilisationFeePerUSDSnapshotD(): BigInt {
-    let result = super.call(
-      "globalStabilisationFeePerUSDSnapshotD",
-      "globalStabilisationFeePerUSDSnapshotD():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_globalStabilisationFeePerUSDSnapshotD(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "globalStabilisationFeePerUSDSnapshotD",
-      "globalStabilisationFeePerUSDSnapshotD():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  globalStabilisationFeePerUSDSnapshotTimestamp(): BigInt {
-    let result = super.call(
-      "globalStabilisationFeePerUSDSnapshotTimestamp",
-      "globalStabilisationFeePerUSDSnapshotTimestamp():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_globalStabilisationFeePerUSDSnapshotTimestamp(): ethereum.CallResult<
-    BigInt
-  > {
-    let result = super.tryCall(
-      "globalStabilisationFeePerUSDSnapshotTimestamp",
-      "globalStabilisationFeePerUSDSnapshotTimestamp():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  globalStabilisationFeePerUSDVaultSnapshotD(param0: BigInt): BigInt {
-    let result = super.call(
-      "globalStabilisationFeePerUSDVaultSnapshotD",
-      "globalStabilisationFeePerUSDVaultSnapshotD(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_globalStabilisationFeePerUSDVaultSnapshotD(
-    param0: BigInt
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "globalStabilisationFeePerUSDVaultSnapshotD",
-      "globalStabilisationFeePerUSDVaultSnapshotD(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   hasRole(role: Bytes, account: Address): boolean {
     let result = super.call("hasRole", "hasRole(bytes32,address):(bool)", [
       ethereum.Value.fromFixedBytes(role),
@@ -1370,6 +1346,29 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
+  isLiquidatingPublic(): boolean {
+    let result = super.call(
+      "isLiquidatingPublic",
+      "isLiquidatingPublic():(bool)",
+      []
+    );
+
+    return result[0].toBoolean();
+  }
+
+  try_isLiquidatingPublic(): ethereum.CallResult<boolean> {
+    let result = super.tryCall(
+      "isLiquidatingPublic",
+      "isLiquidatingPublic():(bool)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
   isOperator(sender: Address): boolean {
     let result = super.call("isOperator", "isOperator(address):(bool)", [
       ethereum.Value.fromAddress(sender)
@@ -1404,29 +1403,6 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  isPoolWhitelisted(pool: Address): boolean {
-    let result = super.call(
-      "isPoolWhitelisted",
-      "isPoolWhitelisted(address):(bool)",
-      [ethereum.Value.fromAddress(pool)]
-    );
-
-    return result[0].toBoolean();
-  }
-
-  try_isPoolWhitelisted(pool: Address): ethereum.CallResult<boolean> {
-    let result = super.tryCall(
-      "isPoolWhitelisted",
-      "isPoolWhitelisted(address):(bool)",
-      [ethereum.Value.fromAddress(pool)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
   isPublic(): boolean {
     let result = super.call("isPublic", "isPublic():(bool)", []);
 
@@ -1442,27 +1418,27 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  liquidationThresholdD(param0: Address): BigInt {
+  liquidatorsAllowlist(): Array<Address> {
     let result = super.call(
-      "liquidationThresholdD",
-      "liquidationThresholdD(address):(uint256)",
-      [ethereum.Value.fromAddress(param0)]
+      "liquidatorsAllowlist",
+      "liquidatorsAllowlist():(address[])",
+      []
     );
 
-    return result[0].toBigInt();
+    return result[0].toAddressArray();
   }
 
-  try_liquidationThresholdD(param0: Address): ethereum.CallResult<BigInt> {
+  try_liquidatorsAllowlist(): ethereum.CallResult<Array<Address>> {
     let result = super.tryCall(
-      "liquidationThresholdD",
-      "liquidationThresholdD(address):(uint256)",
-      [ethereum.Value.fromAddress(param0)]
+      "liquidatorsAllowlist",
+      "liquidatorsAllowlist():(address[])",
+      []
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
+    return ethereum.CallResult.fromValue(value[0].toAddressArray());
   }
 
   mintDebtFromScratch(nft: BigInt, amount: BigInt): BigInt {
@@ -1497,6 +1473,21 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
+  minter(): Address {
+    let result = super.call("minter", "minter():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_minter(): ethereum.CallResult<Address> {
+    let result = super.tryCall("minter", "minter():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   multicall(data: Array<Bytes>): Array<Bytes> {
     let result = super.call("multicall", "multicall(bytes[]):(bytes[])", [
       ethereum.Value.fromBytesArray(data)
@@ -1514,6 +1505,75 @@ export class Vault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBytesArray());
+  }
+
+  normalizationRate(): BigInt {
+    let result = super.call(
+      "normalizationRate",
+      "normalizationRate():(uint216)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_normalizationRate(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "normalizationRate",
+      "normalizationRate():(uint216)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  normalizationRateUpdateTimestamp(): BigInt {
+    let result = super.call(
+      "normalizationRateUpdateTimestamp",
+      "normalizationRateUpdateTimestamp():(uint40)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_normalizationRateUpdateTimestamp(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "normalizationRateUpdateTimestamp",
+      "normalizationRateUpdateTimestamp():(uint40)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  normalizedGlobalDebt(): BigInt {
+    let result = super.call(
+      "normalizedGlobalDebt",
+      "normalizedGlobalDebt():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_normalizedGlobalDebt(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "normalizedGlobalDebt",
+      "normalizedGlobalDebt():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   onERC721Received(
@@ -1587,6 +1647,33 @@ export class Vault extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  poolParams(pool: Address): Vault__poolParamsResultValue0Struct {
+    let result = super.call(
+      "poolParams",
+      "poolParams(address):((uint32,uint32,uint24))",
+      [ethereum.Value.fromAddress(pool)]
+    );
+
+    return changetype<Vault__poolParamsResultValue0Struct>(result[0].toTuple());
+  }
+
+  try_poolParams(
+    pool: Address
+  ): ethereum.CallResult<Vault__poolParamsResultValue0Struct> {
+    let result = super.tryCall(
+      "poolParams",
+      "poolParams(address):((uint32,uint32,uint24))",
+      [ethereum.Value.fromAddress(pool)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      changetype<Vault__poolParamsResultValue0Struct>(value[0].toTuple())
+    );
   }
 
   positionManager(): Address {
@@ -1664,31 +1751,6 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  stabilisationFeeVaultSnapshot(param0: BigInt): BigInt {
-    let result = super.call(
-      "stabilisationFeeVaultSnapshot",
-      "stabilisationFeeVaultSnapshot(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_stabilisationFeeVaultSnapshot(
-    param0: BigInt
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "stabilisationFeeVaultSnapshot",
-      "stabilisationFeeVaultSnapshot(uint256):(uint256)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   supportsInterface(interfaceId: Bytes): boolean {
     let result = super.call(
       "supportsInterface",
@@ -1742,33 +1804,22 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  vaultCount(): BigInt {
-    let result = super.call("vaultCount", "vaultCount():(uint256)", []);
+  updateNormalizationRate(): BigInt {
+    let result = super.call(
+      "updateNormalizationRate",
+      "updateNormalizationRate():(uint256)",
+      []
+    );
 
     return result[0].toBigInt();
   }
 
-  try_vaultCount(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("vaultCount", "vaultCount():(uint256)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  vaultDebt(param0: BigInt): BigInt {
-    let result = super.call("vaultDebt", "vaultDebt(uint256):(uint256)", [
-      ethereum.Value.fromUnsignedBigInt(param0)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_vaultDebt(param0: BigInt): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("vaultDebt", "vaultDebt(uint256):(uint256)", [
-      ethereum.Value.fromUnsignedBigInt(param0)
-    ]);
+  try_updateNormalizationRate(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "updateNormalizationRate",
+      "updateNormalizationRate():(uint256)",
+      []
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -1788,6 +1839,29 @@ export class Vault extends ethereum.SmartContract {
     let result = super.tryCall(
       "vaultIdByNft",
       "vaultIdByNft(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  vaultMintedDebt(param0: BigInt): BigInt {
+    let result = super.call(
+      "vaultMintedDebt",
+      "vaultMintedDebt(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_vaultMintedDebt(param0: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "vaultMintedDebt",
+      "vaultMintedDebt(uint256):(uint256)",
       [ethereum.Value.fromUnsignedBigInt(param0)]
     );
     if (result.reverted) {
@@ -1820,6 +1894,48 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigIntArray());
   }
 
+  vaultNormalizedDebt(param0: BigInt): BigInt {
+    let result = super.call(
+      "vaultNormalizedDebt",
+      "vaultNormalizedDebt(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_vaultNormalizedDebt(param0: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "vaultNormalizedDebt",
+      "vaultNormalizedDebt(uint256):(uint256)",
+      [ethereum.Value.fromUnsignedBigInt(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  vaultOwed(param0: BigInt): BigInt {
+    let result = super.call("vaultOwed", "vaultOwed(uint256):(uint256)", [
+      ethereum.Value.fromUnsignedBigInt(param0)
+    ]);
+
+    return result[0].toBigInt();
+  }
+
+  try_vaultOwed(param0: BigInt): ethereum.CallResult<BigInt> {
+    let result = super.tryCall("vaultOwed", "vaultOwed(uint256):(uint256)", [
+      ethereum.Value.fromUnsignedBigInt(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   vaultRegistry(): Address {
     let result = super.call("vaultRegistry", "vaultRegistry():(address)", []);
 
@@ -1839,27 +1955,39 @@ export class Vault extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
-  whitelistedPool(i: BigInt): Address {
+  withdrawOwed(vaultId: BigInt, to: Address, maxAmount: BigInt): BigInt {
     let result = super.call(
-      "whitelistedPool",
-      "whitelistedPool(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(i)]
+      "withdrawOwed",
+      "withdrawOwed(uint256,address,uint256):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(vaultId),
+        ethereum.Value.fromAddress(to),
+        ethereum.Value.fromUnsignedBigInt(maxAmount)
+      ]
     );
 
-    return result[0].toAddress();
+    return result[0].toBigInt();
   }
 
-  try_whitelistedPool(i: BigInt): ethereum.CallResult<Address> {
+  try_withdrawOwed(
+    vaultId: BigInt,
+    to: Address,
+    maxAmount: BigInt
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "whitelistedPool",
-      "whitelistedPool(uint256):(address)",
-      [ethereum.Value.fromUnsignedBigInt(i)]
+      "withdrawOwed",
+      "withdrawOwed(uint256,address,uint256):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(vaultId),
+        ethereum.Value.fromAddress(to),
+        ethereum.Value.fromUnsignedBigInt(maxAmount)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 }
 
@@ -1894,6 +2022,14 @@ export class ConstructorCall__Inputs {
 
   get token_(): Address {
     return this._call.inputValues[3].value.toAddress();
+  }
+
+  get minter_(): Address {
+    return this._call.inputValues[4].value.toAddress();
+  }
+
+  get vaultRegistry_(): Address {
+    return this._call.inputValues[5].value.toAddress();
   }
 }
 
@@ -1935,6 +2071,36 @@ export class AddDepositorsToAllowlistCall__Outputs {
   }
 }
 
+export class AddLiquidatorsToAllowlistCall extends ethereum.Call {
+  get inputs(): AddLiquidatorsToAllowlistCall__Inputs {
+    return new AddLiquidatorsToAllowlistCall__Inputs(this);
+  }
+
+  get outputs(): AddLiquidatorsToAllowlistCall__Outputs {
+    return new AddLiquidatorsToAllowlistCall__Outputs(this);
+  }
+}
+
+export class AddLiquidatorsToAllowlistCall__Inputs {
+  _call: AddLiquidatorsToAllowlistCall;
+
+  constructor(call: AddLiquidatorsToAllowlistCall) {
+    this._call = call;
+  }
+
+  get liquidators(): Array<Address> {
+    return this._call.inputValues[0].value.toAddressArray();
+  }
+}
+
+export class AddLiquidatorsToAllowlistCall__Outputs {
+  _call: AddLiquidatorsToAllowlistCall;
+
+  constructor(call: AddLiquidatorsToAllowlistCall) {
+    this._call = call;
+  }
+}
+
 export class BurnDebtCall extends ethereum.Call {
   get inputs(): BurnDebtCall__Inputs {
     return new BurnDebtCall__Inputs(this);
@@ -1965,6 +2131,36 @@ export class BurnDebtCall__Outputs {
   _call: BurnDebtCall;
 
   constructor(call: BurnDebtCall) {
+    this._call = call;
+  }
+}
+
+export class BurnVaultCall extends ethereum.Call {
+  get inputs(): BurnVaultCall__Inputs {
+    return new BurnVaultCall__Inputs(this);
+  }
+
+  get outputs(): BurnVaultCall__Outputs {
+    return new BurnVaultCall__Outputs(this);
+  }
+}
+
+export class BurnVaultCall__Inputs {
+  _call: BurnVaultCall;
+
+  constructor(call: BurnVaultCall) {
+    this._call = call;
+  }
+
+  get vaultId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class BurnVaultCall__Outputs {
+  _call: BurnVaultCall;
+
+  constructor(call: BurnVaultCall) {
     this._call = call;
   }
 }
@@ -2511,6 +2707,58 @@ export class LiquidateCall__Outputs {
   }
 }
 
+export class MakeLiquidationsPrivateCall extends ethereum.Call {
+  get inputs(): MakeLiquidationsPrivateCall__Inputs {
+    return new MakeLiquidationsPrivateCall__Inputs(this);
+  }
+
+  get outputs(): MakeLiquidationsPrivateCall__Outputs {
+    return new MakeLiquidationsPrivateCall__Outputs(this);
+  }
+}
+
+export class MakeLiquidationsPrivateCall__Inputs {
+  _call: MakeLiquidationsPrivateCall;
+
+  constructor(call: MakeLiquidationsPrivateCall) {
+    this._call = call;
+  }
+}
+
+export class MakeLiquidationsPrivateCall__Outputs {
+  _call: MakeLiquidationsPrivateCall;
+
+  constructor(call: MakeLiquidationsPrivateCall) {
+    this._call = call;
+  }
+}
+
+export class MakeLiquidationsPublicCall extends ethereum.Call {
+  get inputs(): MakeLiquidationsPublicCall__Inputs {
+    return new MakeLiquidationsPublicCall__Inputs(this);
+  }
+
+  get outputs(): MakeLiquidationsPublicCall__Outputs {
+    return new MakeLiquidationsPublicCall__Outputs(this);
+  }
+}
+
+export class MakeLiquidationsPublicCall__Inputs {
+  _call: MakeLiquidationsPublicCall;
+
+  constructor(call: MakeLiquidationsPublicCall) {
+    this._call = call;
+  }
+}
+
+export class MakeLiquidationsPublicCall__Outputs {
+  _call: MakeLiquidationsPublicCall;
+
+  constructor(call: MakeLiquidationsPublicCall) {
+    this._call = call;
+  }
+}
+
 export class MakePrivateCall extends ethereum.Call {
   get inputs(): MakePrivateCall__Inputs {
     return new MakePrivateCall__Inputs(this);
@@ -2801,6 +3049,36 @@ export class RemoveDepositorsFromAllowlistCall__Outputs {
   }
 }
 
+export class RemoveLiquidatorsFromAllowlistCall extends ethereum.Call {
+  get inputs(): RemoveLiquidatorsFromAllowlistCall__Inputs {
+    return new RemoveLiquidatorsFromAllowlistCall__Inputs(this);
+  }
+
+  get outputs(): RemoveLiquidatorsFromAllowlistCall__Outputs {
+    return new RemoveLiquidatorsFromAllowlistCall__Outputs(this);
+  }
+}
+
+export class RemoveLiquidatorsFromAllowlistCall__Inputs {
+  _call: RemoveLiquidatorsFromAllowlistCall;
+
+  constructor(call: RemoveLiquidatorsFromAllowlistCall) {
+    this._call = call;
+  }
+
+  get liquidators(): Array<Address> {
+    return this._call.inputValues[0].value.toAddressArray();
+  }
+}
+
+export class RemoveLiquidatorsFromAllowlistCall__Outputs {
+  _call: RemoveLiquidatorsFromAllowlistCall;
+
+  constructor(call: RemoveLiquidatorsFromAllowlistCall) {
+    this._call = call;
+  }
+}
+
 export class RenounceRoleCall extends ethereum.Call {
   get inputs(): RenounceRoleCall__Inputs {
     return new RenounceRoleCall__Inputs(this);
@@ -2869,50 +3147,20 @@ export class RevokeRoleCall__Outputs {
   }
 }
 
-export class RevokeWhitelistedPoolCall extends ethereum.Call {
-  get inputs(): RevokeWhitelistedPoolCall__Inputs {
-    return new RevokeWhitelistedPoolCall__Inputs(this);
+export class SetPoolParamsCall extends ethereum.Call {
+  get inputs(): SetPoolParamsCall__Inputs {
+    return new SetPoolParamsCall__Inputs(this);
   }
 
-  get outputs(): RevokeWhitelistedPoolCall__Outputs {
-    return new RevokeWhitelistedPoolCall__Outputs(this);
-  }
-}
-
-export class RevokeWhitelistedPoolCall__Inputs {
-  _call: RevokeWhitelistedPoolCall;
-
-  constructor(call: RevokeWhitelistedPoolCall) {
-    this._call = call;
-  }
-
-  get pool(): Address {
-    return this._call.inputValues[0].value.toAddress();
+  get outputs(): SetPoolParamsCall__Outputs {
+    return new SetPoolParamsCall__Outputs(this);
   }
 }
 
-export class RevokeWhitelistedPoolCall__Outputs {
-  _call: RevokeWhitelistedPoolCall;
+export class SetPoolParamsCall__Inputs {
+  _call: SetPoolParamsCall;
 
-  constructor(call: RevokeWhitelistedPoolCall) {
-    this._call = call;
-  }
-}
-
-export class SetLiquidationThresholdCall extends ethereum.Call {
-  get inputs(): SetLiquidationThresholdCall__Inputs {
-    return new SetLiquidationThresholdCall__Inputs(this);
-  }
-
-  get outputs(): SetLiquidationThresholdCall__Outputs {
-    return new SetLiquidationThresholdCall__Outputs(this);
-  }
-}
-
-export class SetLiquidationThresholdCall__Inputs {
-  _call: SetLiquidationThresholdCall;
-
-  constructor(call: SetLiquidationThresholdCall) {
+  constructor(call: SetPoolParamsCall) {
     this._call = call;
   }
 
@@ -2920,76 +3168,32 @@ export class SetLiquidationThresholdCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get liquidationThresholdD_(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
+  get params(): SetPoolParamsCallParamsStruct {
+    return changetype<SetPoolParamsCallParamsStruct>(
+      this._call.inputValues[1].value.toTuple()
+    );
   }
 }
 
-export class SetLiquidationThresholdCall__Outputs {
-  _call: SetLiquidationThresholdCall;
+export class SetPoolParamsCall__Outputs {
+  _call: SetPoolParamsCall;
 
-  constructor(call: SetLiquidationThresholdCall) {
+  constructor(call: SetPoolParamsCall) {
     this._call = call;
   }
 }
 
-export class SetVaultRegistryCall extends ethereum.Call {
-  get inputs(): SetVaultRegistryCall__Inputs {
-    return new SetVaultRegistryCall__Inputs(this);
+export class SetPoolParamsCallParamsStruct extends ethereum.Tuple {
+  get liquidationThreshold(): BigInt {
+    return this[0].toBigInt();
   }
 
-  get outputs(): SetVaultRegistryCall__Outputs {
-    return new SetVaultRegistryCall__Outputs(this);
-  }
-}
-
-export class SetVaultRegistryCall__Inputs {
-  _call: SetVaultRegistryCall;
-
-  constructor(call: SetVaultRegistryCall) {
-    this._call = call;
+  get borrowThreshold(): BigInt {
+    return this[1].toBigInt();
   }
 
-  get vaultRegistry_(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetVaultRegistryCall__Outputs {
-  _call: SetVaultRegistryCall;
-
-  constructor(call: SetVaultRegistryCall) {
-    this._call = call;
-  }
-}
-
-export class SetWhitelistedPoolCall extends ethereum.Call {
-  get inputs(): SetWhitelistedPoolCall__Inputs {
-    return new SetWhitelistedPoolCall__Inputs(this);
-  }
-
-  get outputs(): SetWhitelistedPoolCall__Outputs {
-    return new SetWhitelistedPoolCall__Outputs(this);
-  }
-}
-
-export class SetWhitelistedPoolCall__Inputs {
-  _call: SetWhitelistedPoolCall;
-
-  constructor(call: SetWhitelistedPoolCall) {
-    this._call = call;
-  }
-
-  get pool(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetWhitelistedPoolCall__Outputs {
-  _call: SetWhitelistedPoolCall;
-
-  constructor(call: SetWhitelistedPoolCall) {
-    this._call = call;
+  get minWidth(): i32 {
+    return this[2].toI32();
   }
 }
 
@@ -3016,6 +3220,36 @@ export class UnpauseCall__Outputs {
 
   constructor(call: UnpauseCall) {
     this._call = call;
+  }
+}
+
+export class UpdateNormalizationRateCall extends ethereum.Call {
+  get inputs(): UpdateNormalizationRateCall__Inputs {
+    return new UpdateNormalizationRateCall__Inputs(this);
+  }
+
+  get outputs(): UpdateNormalizationRateCall__Outputs {
+    return new UpdateNormalizationRateCall__Outputs(this);
+  }
+}
+
+export class UpdateNormalizationRateCall__Inputs {
+  _call: UpdateNormalizationRateCall;
+
+  constructor(call: UpdateNormalizationRateCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateNormalizationRateCall__Outputs {
+  _call: UpdateNormalizationRateCall;
+
+  constructor(call: UpdateNormalizationRateCall) {
+    this._call = call;
+  }
+
+  get updatedNormalizationRate(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
@@ -3076,5 +3310,47 @@ export class WithdrawCollateralCall__Outputs {
 
   constructor(call: WithdrawCollateralCall) {
     this._call = call;
+  }
+}
+
+export class WithdrawOwedCall extends ethereum.Call {
+  get inputs(): WithdrawOwedCall__Inputs {
+    return new WithdrawOwedCall__Inputs(this);
+  }
+
+  get outputs(): WithdrawOwedCall__Outputs {
+    return new WithdrawOwedCall__Outputs(this);
+  }
+}
+
+export class WithdrawOwedCall__Inputs {
+  _call: WithdrawOwedCall;
+
+  constructor(call: WithdrawOwedCall) {
+    this._call = call;
+  }
+
+  get vaultId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get to(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get maxAmount(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+}
+
+export class WithdrawOwedCall__Outputs {
+  _call: WithdrawOwedCall;
+
+  constructor(call: WithdrawOwedCall) {
+    this._call = call;
+  }
+
+  get withdrawnAmount(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
   }
 }

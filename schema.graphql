@@ -1,9 +1,6 @@
 type Vault @entity {
   id: String!
-  vaultDebt: BigInt!
-  stabilisationFeeVaultSnapshot: BigInt!
-  globalStabilisationFeePerUSDVaultSnapshotD: BigInt!
-  lastDebtUpdate: BigInt!
+  vaultNormalizedDebt: BigInt!
   uniV3Positions: [UniV3Position!]! @derivedFrom(field: "vault")
 }
 
@@ -31,14 +28,16 @@ type Withdrawal @entity {
   uniV3Position: BigInt!
 }
 
-type LiquidationThreshold @entity {
+type PoolInfo @entity {
   id: String!
   liquidationThreshold: BigInt!
+  borrowThreshold: BigInt!
+  minWidth: Int!
 }
 
 type UniV3Position @entity {
   id: String!
-  liquidationThreshold: LiquidationThreshold!
+  pool: PoolInfo!
   vault: Vault!
   liquidity: BigInt!
   token0: Bytes!

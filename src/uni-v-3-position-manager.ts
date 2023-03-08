@@ -30,7 +30,7 @@ export function handleDecreaseLiquidity(event: DecreaseLiquidityEvent): void {
   let position = positionManager.positions(event.params.tokenId);
   entity.amount0 = position.getTokensOwed0();
   entity.amount1 = position.getTokensOwed1();
-  entity.liquidity = entity.liquidity.minus(event.params.liquidity);
+  entity.liquidity = position.getLiquidity();
   entity.save();
 }
 
@@ -43,6 +43,6 @@ export function handleIncreaseLiquidity(event: IncreaseLiquidityEvent): void {
   let position = positionManager.positions(event.params.tokenId);
   entity.amount0 = position.getTokensOwed0();
   entity.amount1 = position.getTokensOwed1();
-  entity.liquidity = entity.liquidity.plus(event.params.liquidity);
+  entity.liquidity = position.getLiquidity();
   entity.save();
 }

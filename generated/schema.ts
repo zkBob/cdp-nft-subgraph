@@ -42,43 +42,13 @@ export class Vault extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get vaultDebt(): BigInt {
-    let value = this.get("vaultDebt");
+  get vaultNormalizedDebt(): BigInt {
+    let value = this.get("vaultNormalizedDebt");
     return value!.toBigInt();
   }
 
-  set vaultDebt(value: BigInt) {
-    this.set("vaultDebt", Value.fromBigInt(value));
-  }
-
-  get stabilisationFeeVaultSnapshot(): BigInt {
-    let value = this.get("stabilisationFeeVaultSnapshot");
-    return value!.toBigInt();
-  }
-
-  set stabilisationFeeVaultSnapshot(value: BigInt) {
-    this.set("stabilisationFeeVaultSnapshot", Value.fromBigInt(value));
-  }
-
-  get globalStabilisationFeePerUSDVaultSnapshotD(): BigInt {
-    let value = this.get("globalStabilisationFeePerUSDVaultSnapshotD");
-    return value!.toBigInt();
-  }
-
-  set globalStabilisationFeePerUSDVaultSnapshotD(value: BigInt) {
-    this.set(
-      "globalStabilisationFeePerUSDVaultSnapshotD",
-      Value.fromBigInt(value)
-    );
-  }
-
-  get lastDebtUpdate(): BigInt {
-    let value = this.get("lastDebtUpdate");
-    return value!.toBigInt();
-  }
-
-  set lastDebtUpdate(value: BigInt) {
-    this.set("lastDebtUpdate", Value.fromBigInt(value));
+  set vaultNormalizedDebt(value: BigInt) {
+    this.set("vaultNormalizedDebt", Value.fromBigInt(value));
   }
 
   get uniV3Positions(): Array<string> {
@@ -295,7 +265,7 @@ export class Withdrawal extends Entity {
   }
 }
 
-export class LiquidationThreshold extends Entity {
+export class PoolInfo extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -303,20 +273,18 @@ export class LiquidationThreshold extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save LiquidationThreshold entity without an ID");
+    assert(id != null, "Cannot save PoolInfo entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type LiquidationThreshold must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type PoolInfo must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("LiquidationThreshold", id.toString(), this);
+      store.set("PoolInfo", id.toString(), this);
     }
   }
 
-  static load(id: string): LiquidationThreshold | null {
-    return changetype<LiquidationThreshold | null>(
-      store.get("LiquidationThreshold", id)
-    );
+  static load(id: string): PoolInfo | null {
+    return changetype<PoolInfo | null>(store.get("PoolInfo", id));
   }
 
   get id(): string {
@@ -335,6 +303,24 @@ export class LiquidationThreshold extends Entity {
 
   set liquidationThreshold(value: BigInt) {
     this.set("liquidationThreshold", Value.fromBigInt(value));
+  }
+
+  get borrowThreshold(): BigInt {
+    let value = this.get("borrowThreshold");
+    return value!.toBigInt();
+  }
+
+  set borrowThreshold(value: BigInt) {
+    this.set("borrowThreshold", Value.fromBigInt(value));
+  }
+
+  get minWidth(): i32 {
+    let value = this.get("minWidth");
+    return value!.toI32();
+  }
+
+  set minWidth(value: i32) {
+    this.set("minWidth", Value.fromI32(value));
   }
 }
 
@@ -369,13 +355,13 @@ export class UniV3Position extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get liquidationThreshold(): string {
-    let value = this.get("liquidationThreshold");
+  get pool(): string {
+    let value = this.get("pool");
     return value!.toString();
   }
 
-  set liquidationThreshold(value: string) {
-    this.set("liquidationThreshold", Value.fromString(value));
+  set pool(value: string) {
+    this.set("pool", Value.fromString(value));
   }
 
   get vault(): string {

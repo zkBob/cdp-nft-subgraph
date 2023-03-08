@@ -7,21 +7,18 @@ import {
   DebtMinted,
   VaultLiquidated,
   VaultOpened,
-  WhitelistedPoolSet,
-  WhitelistedPoolRevoked,
-  LiquidationThresholdSet
+  LiquidationThresholdChanged,
+  BorrowThresholdChanged,
+  MinWidthChanged
 } from "../generated/Vault/Vault"
 import { UniV3PositionManager } from "../generated/UniV3PositionManager/UniV3PositionManager"
 import { UniV3Factory } from "../generated/UniV3PositionManager/UniV3Factory"
-import { DebtBurnedEntity, DebtMintedEntity, Deposit, LiquidationThreshold, UniV3Position, Vault, Withdrawal } from "../generated/schema"
+import { DebtBurnedEntity, DebtMintedEntity, Deposit, PoolInfo, UniV3Position, Vault, Withdrawal } from "../generated/schema"
 
 
 export function handleVaultOpened(event: VaultOpened): void {
   let vault = new Vault(event.params.vaultId.toString());
-  vault.vaultDebt = BigInt.fromI32(0);
-  vault.stabilisationFeeVaultSnapshot = BigInt.fromI32(0);
-  vault.globalStabilisationFeePerUSDVaultSnapshotD = BigInt.fromI32(0);
-  vault.lastDebtUpdate = event.block.timestamp;
+  vault.vaultNormalizedDebt = BigInt.fromI32(0);
   vault.save();
 }
 
@@ -31,10 +28,7 @@ export function handleDebtMinted(event: DebtMinted): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
-  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
-  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
-  vaultEntity.lastDebtUpdate = event.block.timestamp;
+  vaultEntity.vaultNormalizedDebt = cdp.vaultNormalizedDebt(event.params.vaultId);
   vaultEntity.save();
 
   let minted = new DebtMintedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
@@ -49,10 +43,7 @@ export function handleDebtBurned(event: DebtBurned): void {
     return;
   }
   let cdp = VaultContract.bind(event.address);
-  vaultEntity.vaultDebt = cdp.vaultDebt(event.params.vaultId);
-  vaultEntity.stabilisationFeeVaultSnapshot = cdp.stabilisationFeeVaultSnapshot(event.params.vaultId);
-  vaultEntity.globalStabilisationFeePerUSDVaultSnapshotD = cdp.globalStabilisationFeePerUSDVaultSnapshotD(event.params.vaultId);
-  vaultEntity.lastDebtUpdate = event.block.timestamp;
+  vaultEntity.vaultNormalizedDebt = cdp.vaultNormalizedDebt(event.params.vaultId);
   vaultEntity.save();
 
   let burned = new DebtBurnedEntity(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
@@ -93,7 +84,7 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
   position.liquidity = info.getLiquidity();
   position.tickLower = info.getTickLower();
   position.tickUpper = info.getTickUpper();
-  position.liquidationThreshold = pool.toHexString();
+  position.pool = pool.toHexString();
   position.save();
 
   let deposit = new Deposit(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
@@ -116,21 +107,38 @@ export function handleVaultLiquidated(event: VaultLiquidated): void {
   // so, we don't need to remove the vault itself
 }
 
-export function handleWhitelistedPoolSet(event: WhitelistedPoolSet): void {
-  let lt = new LiquidationThreshold(event.params.pool.toHexString());
-  lt.liquidationThreshold = BigInt.fromI32(0);
-  lt.save();
-}
-
-export function handleWhitelistedPoolRevoked(event: WhitelistedPoolRevoked): void {
-  store.remove('LiquidationThreshold', event.params.pool.toHexString());
-}
-
-export function handleLiquidationThresholdSet(event: LiquidationThresholdSet): void {
-  let lt = LiquidationThreshold.load(event.params.pool.toHexString());
-  if (lt == null) {
-    return;
+export function handleLiquidationThresholdChanged(event: LiquidationThresholdChanged): void {
+  let poolInfo = PoolInfo.load(event.params.pool.toHexString());
+  if (poolInfo == null) {
+    poolInfo = new PoolInfo(event.params.pool.toHexString());
+    poolInfo.liquidationThreshold = BigInt.fromI32(0);
+    poolInfo.borrowThreshold = BigInt.fromI32(0);
+    poolInfo.minWidth = 0;
   }
-  lt.liquidationThreshold = event.params.liquidationThresholdD_;
-  lt.save();
+  poolInfo.liquidationThreshold = event.params.liquidationThreshold;
+  poolInfo.save();
+}
+
+export function handleBorrowThresholdChanged(event: BorrowThresholdChanged): void {
+  let poolInfo = PoolInfo.load(event.params.pool.toHexString());
+  if (poolInfo == null) {
+    poolInfo = new PoolInfo(event.params.pool.toHexString());
+    poolInfo.liquidationThreshold = BigInt.fromI32(0);
+    poolInfo.borrowThreshold = BigInt.fromI32(0);
+    poolInfo.minWidth = 0;
+  }
+  poolInfo.borrowThreshold = event.params.borrowThreshold;
+  poolInfo.save();
+}
+
+export function handleMinWidthChanged(event: MinWidthChanged): void {
+  let poolInfo = PoolInfo.load(event.params.pool.toHexString());
+  if (poolInfo == null) {
+    poolInfo = new PoolInfo(event.params.pool.toHexString());
+    poolInfo.liquidationThreshold = BigInt.fromI32(0);
+    poolInfo.borrowThreshold = BigInt.fromI32(0);
+    poolInfo.minWidth = 0;
+  }
+  poolInfo.minWidth = event.params.minWidth;
+  poolInfo.save();
 }
