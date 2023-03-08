@@ -364,15 +364,6 @@ export class UniV3Position extends Entity {
     this.set("pool", Value.fromString(value));
   }
 
-  get vault(): string {
-    let value = this.get("vault");
-    return value!.toString();
-  }
-
-  set vault(value: string) {
-    this.set("vault", Value.fromString(value));
-  }
-
   get liquidity(): BigInt {
     let value = this.get("liquidity");
     return value!.toBigInt();

@@ -1,7 +1,7 @@
 type Vault @entity {
   id: String!
   vaultNormalizedDebt: BigInt!
-  uniV3Positions: [UniV3Position!]! @derivedFrom(field: "vault")
+  uniV3Positions: [UniV3Position!]!
 }
 
 type DebtMintedEntity @entity {
@@ -38,7 +38,6 @@ type PoolInfo @entity {
 type UniV3Position @entity {
   id: String!
   pool: PoolInfo!
-  vault: Vault!
   liquidity: BigInt!
   token0: Bytes!
   token1: Bytes!
