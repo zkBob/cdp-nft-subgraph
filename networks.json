@@ -1,7 +1,7 @@
 {
   "matic": {
     "Vault": {
-      "address": "0x93B99138CE8406564f21a711Fb1b6b4ccdbb262c"
+      "address": "0x901EE5CeD8Cb8958342F0C21CC0CFcD0e37adEA5"
     },
     "UniV3PositionManager": {
       "address": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
