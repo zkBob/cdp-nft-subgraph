@@ -1,4 +1,4 @@
-import { BigInt, Bytes, store } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, store, log } from "@graphprotocol/graph-ts"
 import {
   Vault as VaultContract,
   CollateralDeposited,
@@ -19,6 +19,7 @@ import { DebtBurnedEntity, DebtMintedEntity, Deposit, PoolInfo, UniV3Position, V
 export function handleVaultOpened(event: VaultOpened): void {
   let vault = new Vault(event.params.vaultId.toString());
   vault.vaultNormalizedDebt = BigInt.fromI32(0);
+  vault.uniV3Positions = [];
   vault.save();
 }
 
@@ -80,12 +81,16 @@ export function handleCollateralDeposited(event: CollateralDeposited): void {
   position.token1 = info.getToken1();
   position.amount0 = info.getTokensOwed0();
   position.amount1 = info.getTokensOwed1();
-  position.vault = vaultEntity.id;
   position.liquidity = info.getLiquidity();
   position.tickLower = info.getTickLower();
   position.tickUpper = info.getTickUpper();
   position.pool = pool.toHexString();
   position.save();
+
+  let positions = vaultEntity.uniV3Positions;
+  positions.push(position.id);
+  vaultEntity.uniV3Positions = positions;
+  vaultEntity.save();
 
   let deposit = new Deposit(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
   deposit.uniV3Position = event.params.tokenId;
@@ -98,10 +103,12 @@ export function handleVaultLiquidated(event: VaultLiquidated): void {
   if (vault == null) {
     return;
   }
+  vault.vaultNormalizedDebt = BigInt.fromI32(0);
   let positions = vault.uniV3Positions;
+  vault.uniV3Positions = [];
+  vault.save();
   for (let i = 0; i < positions.length; ++i) {
-    let position = positions[i];
-    store.remove('uniV3Position', position);
+    store.remove('UniV3Position', positions[i]);
   }
   // INFO: vault can be reopened 
   // so, we don't need to remove the vault itself
