@@ -1,7 +1,15 @@
 {
   "matic": {
     "Vault": {
-      "address": "0x901EE5CeD8Cb8958342F0C21CC0CFcD0e37adEA5"
+      "address": "0x729D360afa525f02Dd36cC81A916594AbA428ac5"
+    },
+    "UniV3PositionManager": {
+      "address": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
+    }
+  },
+  "goerli": {
+    "Vault": {
+      "address": "0x729D360afa525f02Dd36cC81A916594AbA428ac5"
     },
     "UniV3PositionManager": {
       "address": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"

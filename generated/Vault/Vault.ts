@@ -23,20 +23,16 @@ export class BorrowThresholdChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
+  get pool(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get pool(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-
   get borrowThreshold(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -157,16 +153,12 @@ export class LiquidationFeeChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get liquidationFeeD(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -183,16 +175,12 @@ export class LiquidationPremiumChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get liquidationPremiumD(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -209,20 +197,16 @@ export class LiquidationThresholdChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
+  get pool(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get pool(): Address {
-    return this._event.parameters[2].value.toAddress();
-  }
-
   get liquidationThreshold(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
@@ -239,12 +223,8 @@ export class LiquidationsPrivate__Params {
     this._event = event;
   }
 
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -261,12 +241,8 @@ export class LiquidationsPublic__Params {
     this._event = event;
   }
 
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -283,16 +259,12 @@ export class MaxDebtPerVaultChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get maxDebtPerVault(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -309,16 +281,12 @@ export class MaxNftsPerVaultChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get maxNftsPerVault(): i32 {
-    return this._event.parameters[2].value.toI32();
+    return this._event.parameters[1].value.toI32();
   }
 }
 
@@ -335,16 +303,12 @@ export class MinSingleNftCollateralChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get minSingleNftCollateral(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -361,20 +325,34 @@ export class MinWidthChanged__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
+  get pool(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get pool(): Address {
-    return this._event.parameters[2].value.toAddress();
+  get minWidth(): i32 {
+    return this._event.parameters[2].value.toI32();
+  }
+}
+
+export class NormalizationRateUpdated extends ethereum.Event {
+  get params(): NormalizationRateUpdated__Params {
+    return new NormalizationRateUpdated__Params(this);
+  }
+}
+
+export class NormalizationRateUpdated__Params {
+  _event: NormalizationRateUpdated;
+
+  constructor(event: NormalizationRateUpdated) {
+    this._event = event;
   }
 
-  get minWidth(): i32 {
-    return this._event.parameters[3].value.toI32();
+  get normalizationRate(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 }
 
@@ -469,16 +447,12 @@ export class StabilisationFeeUpdated__Params {
     this._event = event;
   }
 
-  get origin(): Address {
+  get sender(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-
   get stabilisationFee(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+    return this._event.parameters[1].value.toBigInt();
   }
 }
 
@@ -495,12 +469,8 @@ export class SystemPaused__Params {
     this._event = event;
   }
 
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -517,12 +487,8 @@ export class SystemPrivate__Params {
     this._event = event;
   }
 
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -539,12 +505,8 @@ export class SystemPublic__Params {
     this._event = event;
   }
 
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -561,12 +523,8 @@ export class SystemUnpaused__Params {
     this._event = event;
   }
 
-  get origin(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
   get sender(): Address {
-    return this._event.parameters[1].value.toAddress();
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
