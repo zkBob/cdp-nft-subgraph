@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Vault
-    network: matic
+    network: goerli
     source:
-      address: "0x901EE5CeD8Cb8958342F0C21CC0CFcD0e37adEA5"
+      address: "0x729D360afa525f02Dd36cC81A916594AbA428ac5"
       abi: Vault
-      startBlock: 40096356
+      startBlock: 8629267
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -16,6 +16,7 @@ dataSources:
       entities:
         - Vault
         - UniV3Position
+        - PoolInfo
       abis:
         - name: Vault
           file: ./abis/Vault.json
@@ -24,32 +25,32 @@ dataSources:
         - name: UniV3Factory
           file: ./abis/UniV3Factory.json
       eventHandlers:
-        - event: CollateralDeposited(indexed address,uint256,uint256)
+        - event: CollateralDeposited(indexed address,indexed uint256,uint256)
           handler: handleCollateralDeposited
-        - event: CollateralWithdrew(indexed address,uint256,uint256)
+        - event: CollateralWithdrew(indexed address,indexed uint256,uint256)
           handler: handleCollateralWithdrew
-        - event: DebtBurned(indexed address,uint256,uint256)
+        - event: DebtBurned(indexed address,indexed uint256,uint256)
           handler: handleDebtBurned
-        - event: DebtMinted(indexed address,uint256,uint256)
+        - event: DebtMinted(indexed address,indexed uint256,uint256)
           handler: handleDebtMinted
-        - event: VaultLiquidated(indexed address,uint256)
+        - event: VaultLiquidated(indexed address,indexed uint256)
           handler: handleVaultLiquidated
-        - event: VaultOpened(indexed address,uint256)
+        - event: VaultOpened(indexed address,indexed uint256)
           handler: handleVaultOpened
-        - event: LiquidationThresholdChanged(indexed address,indexed address,address,uint32)
+        - event: LiquidationThresholdChanged(indexed address,indexed address,uint32)
           handler: handleLiquidationThresholdChanged
-        - event: BorrowThresholdChanged(indexed address,indexed address,address,uint32)
+        - event: BorrowThresholdChanged(indexed address,indexed address,uint32)
           handler: handleBorrowThresholdChanged
-        - event: MinWidthChanged(indexed address,indexed address,address,uint24)
+        - event: MinWidthChanged(indexed address,indexed address,uint24)
           handler: handleMinWidthChanged
       file: ./src/vault.ts
   - kind: ethereum
     name: UniV3PositionManager
-    network: matic
+    network: goerli
     source:
       address: "0xC36442b4a4522E871399CD717aBDD847Ab11FE88"
       abi: UniV3PositionManager
-      startBlock: 40096356
+      startBlock: 8629267
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

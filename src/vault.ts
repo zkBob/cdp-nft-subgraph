@@ -58,7 +58,7 @@ export function handleCollateralWithdrew(event: CollateralWithdrew): void {
   if (position == null) {
     return;
   }
-  store.remove('uniV3Position', position.id.toString());
+  store.remove('UniV3Position', position.id.toString());
 
   let withdrawal = new Withdrawal(event.transaction.hash.toHexString().concat(event.logIndex.toHexString()));
   withdrawal.uniV3Position = event.params.tokenId;
